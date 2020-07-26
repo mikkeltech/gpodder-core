@@ -762,7 +762,7 @@ class PodcastChannel(PodcastModelFields, PodcastModelMixin):
 
         # Verify that all episode art is up-to-date
         for episode in self.episodes:
-            self.model.core.cover_downloader.get_cover(self, download=True, episode=episode)
+            self.model.core.cover_downloader.get_cover(self, download=self.model.core.config.auto.cover_art.download, episode=episode)
 
         # Sort episodes by pubdate, descending if default, ascending if chrono
         self.episodes.sort(key=lambda e: e.published, reverse=self.download_strategy != PodcastChannel.STRATEGY_CHRONO)
