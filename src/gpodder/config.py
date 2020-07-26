@@ -61,6 +61,10 @@ defaults = {
             'unfinished': True,
         },
 
+        'cover_art': {
+            'download': True,
+        },
+
         'retries': 3,  # number of retries when downloads time out
     },
 

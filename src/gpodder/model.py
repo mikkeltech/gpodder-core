@@ -782,7 +782,7 @@ class PodcastChannel(PodcastModelFields, PodcastModelMixin):
 
             # Download the cover art if it's not yet available, don't run if no save_dir was created yet.
             if self.save_dir:
-                self.model.core.cover_downloader.get_cover(self, download=True)
+                self.model.core.cover_downloader.get_cover(self, download=self.model.core.config.auto.cover_art.download)
 
             self.save()
 
