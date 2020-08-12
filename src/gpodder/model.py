@@ -737,7 +737,7 @@ class PodcastChannel(PodcastModelFields, PodcastModelMixin):
                 last_published = episode.published
 
         # Mark newly-found episodes as old in certain cases
-        new_episodes.sort(key=lambda e: e.published, reverse=True)
+        new_episodes.sort(key=lambda e: e.published, reverse=self.download_strategy != PodcastChannel.STRATEGY_CHRONO)
         new_episodes_count = 0
         for episode in new_episodes:
             # Workaround for bug 340: If the episode has been
