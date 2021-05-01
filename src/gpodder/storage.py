@@ -103,9 +103,14 @@ class Database:
 
     def load_episodes(self, podcast, *args):
         # Don't load deleted podcasts
-        ifpodcast = (model.PodcastEpisode.c.podcast_id==podcast.id)
-        ifdown = ((model.PodcastEpisode.c.state==STATE_NORMAL) | (model.PodcastEpisode.c.state==STATE_DOWNLOADED))
+        ifpodcast = (model.PodcastEpisode.c.podcast_id == podcast.id)
+        ifdown = ((model.PodcastEpisode.c.state == STATE_NORMAL) | (model.PodcastEpisode.c.state == STATE_DOWNLOADED))
         return model.PodcastEpisode.load(self.db, ifpodcast & ifdown)(*args)
+
+    def load_all_episodes(self, podcast, *args):
+        # Don't load deleted podcasts
+        ifdown = ((model.PodcastEpisode.c.state == STATE_NORMAL) | (model.PodcastEpisode.c.state == STATE_DOWNLOADED))
+        return model.PodcastEpisode.load(self.db, ifdown)(*args)
 
     def commit(self):
         self.db.commit()
