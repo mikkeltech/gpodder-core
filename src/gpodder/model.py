@@ -23,16 +23,6 @@
 #  Based on libpodcasts.py (thp, 2005-10-29)
 #
 
-import minidb
-import string
-import hashlib
-import itertools
-import datetime
-import time
-import shutil
-import glob
-import re
-import os
 import gpodder
 from gpodder import util
 from gpodder import coverart
@@ -42,6 +32,18 @@ from gpodder import registry
 import logging
 logger = logging.getLogger(__name__)
 
+import os
+import re
+import glob
+import shutil
+import time
+import datetime
+import itertools
+
+import hashlib
+import string
+
+import minidb
 
 class NoHandlerForURL(Exception):
     pass
@@ -140,7 +142,7 @@ class PodcastEpisode(EpisodeModelFields, PodcastModelMixin):
         subtitle = ''
         link = ''
         published = 0
-        def chapters(o): return []
+        chapters = lambda o: []
         state = gpodder.STATE_NORMAL
         is_new = True
         total_time = 0
@@ -501,7 +503,7 @@ class PodcastChannel(PodcastModelFields, PodcastModelMixin):
         auth_username = ''
         auth_password = ''
         section = 'other'
-        def download_strategy(o): return o.STRATEGY_DEFAULT
+        download_strategy = lambda o: o.STRATEGY_DEFAULT
 
     def __init__(self, model):
         self._parent = model
@@ -765,11 +767,6 @@ class PodcastChannel(PodcastModelFields, PodcastModelMixin):
         # Add new episodes to episodes
         self.episodes.extend(new_episodes)
 
-        # Verify that all episode art is up-to-date
-        for episode in self.episodes:
-            self.model.core.cover_downloader.get_cover(
-                self, download=self.model.core.config.auto.cover_art.download, episode=episode)
-
         # Sort episodes by pubdate, descending if default, ascending if chrono
         self.episodes.sort(key=lambda e: e.published, reverse=self.download_strategy != PodcastChannel.STRATEGY_CHRONO)
 
@@ -788,8 +785,7 @@ class PodcastChannel(PodcastModelFields, PodcastModelMixin):
 
             # Download the cover art if it's not yet available, don't run if no save_dir was created yet.
             if self.save_dir:
-                self.model.core.cover_downloader.get_cover(
-                    self, download=self.model.core.config.auto.cover_art.download)
+                self.model.core.cover_downloader.get_cover(self, download=self.model.core.config.auto.cover_art.download)
 
             self.save()
 

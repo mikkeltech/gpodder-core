@@ -16,16 +16,18 @@
 #
 
 
-import gzip
+import minidb
+
+from gpodder import model
+from gpodder import util
+
 import json
-import logging
 import os
+import gzip
 import re
 import sys
 
-import minidb
-from gpodder import model, util
-
+import logging
 logger = logging.getLogger(__name__)
 
 
