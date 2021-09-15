@@ -1010,9 +1010,25 @@ class Model(object):
         return episode.published
 
     @classmethod
+    def episode_recent_sort_key(cls, episode):
+        return episode.current_position_updated
+
+    @classmethod
     def sort_episodes_by_pubdate(cls, episodes, reverse=False):
         """Sort a list of PodcastEpisode objects chronologically
 
         Returns a iterable, sorted sequence of the episodes
         """
         return sorted(episodes, key=cls.episode_sort_key, reverse=reverse)
+
+    @classmethod
+    def sort_episodes_by_current_position_updated(cls,
+                                                  episodes,
+                                                  reverse=False):
+        """Sort a list of PodcastEpisode objects by their last played time
+
+        Returns a iterable, sorted sequence of the episodes
+        """
+        return sorted(episodes,
+                      key=cls.episode_recent_sort_key,
+                      reverse=reverse)
