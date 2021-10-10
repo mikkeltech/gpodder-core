@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # This metadata block gets parsed by setup.py - use single quotes only
 __tagline__ = 'Media and podcast aggregator'
 __author__ = 'Thomas Perl <thp@gpodder.org>'
-__version__ = '4.12.1'
+__version__ = '4.12.2'
 __date__ = '2021-10-10'
 __relname__ = 'Malkosh'
 __copyright__ = '© 2005-2021 Thomas Perl and the gPodder Team'
