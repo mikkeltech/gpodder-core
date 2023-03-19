@@ -61,6 +61,10 @@ defaults = {
             'unfinished': True,
         },
 
+        'cover_art': {
+            'download': True,
+        },
+
         'retries': 3,  # number of retries when downloads time out
     },
 
@@ -162,10 +166,13 @@ class Config(object):
 
     def schedule_save(self):
         if self.__save_thread is None:
-            self.__save_thread = util.run_in_background(self.save_thread_proc, True)
+            self.__save_thread = util.run_in_background(self.save_thread_proc)
 
     def save_thread_proc(self):
-        time.sleep(self.WRITE_TO_DISK_TIMEOUT)
+        tosleep = self.WRITE_TO_DISK_TIMEOUT
+        while tosleep > 0 and self.__save_thread is not None:
+            time.sleep(1)
+            tosleep -= 1
         if self.__save_thread is not None:
             self.save()
 

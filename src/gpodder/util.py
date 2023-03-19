@@ -765,9 +765,12 @@ def get_update_info(url='http://gpodder.org/downloads'):
     return up_to_date, latest_version, release_date, days_since_release
 
 
+tcount = 0
 def run_in_background(function, daemon=False):
+    global tcount
     logger.debug('run_in_background: %s (%s)', function, str(daemon))
-    thread = threading.Thread(target=function)
+    tcount += 1
+    thread = threading.Thread(target=function, name=f"GP-{tcount}")
     thread.setDaemon(daemon)
     thread.start()
     return thread

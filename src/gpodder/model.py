@@ -94,6 +94,10 @@ class EpisodeModelFields(minidb.Model):
     subtitle = str
     description_html = str
     episode_art_url = str
+    itunes_author = str
+    explicit = bool
+    number = int
+    type = str
 
 
 class PodcastModelFields(minidb.Model):
@@ -129,7 +133,8 @@ class PodcastEpisode(EpisodeModelFields, PodcastModelMixin):
     MAX_FILENAME_LENGTH = 200
 
     UPDATE_KEYS = ('title', 'url', 'description', 'link', 'published', 'guid', 'file_size',
-                   'payment_url', 'subtitle', 'description_html', 'episode_art_url')
+                   'payment_url', 'subtitle', 'description_html', 'episode_art_url', 
+                   'itunes_author', 'explicit', 'number', 'type')
 
     class __minidb_defaults__:
         url = ''
@@ -150,6 +155,10 @@ class PodcastEpisode(EpisodeModelFields, PodcastModelMixin):
         current_position_updated = 0
         last_playback = 0
         episode_art_url = ''
+        itunes_author = ''
+        explicit = False
+        number = 0
+        type = ''
 
     def __init__(self, channel):
         self._parent = channel
@@ -1010,9 +1019,25 @@ class Model(object):
         return episode.published
 
     @classmethod
+    def episode_recent_sort_key(cls, episode):
+        return episode.current_position_updated
+
+    @classmethod
     def sort_episodes_by_pubdate(cls, episodes, reverse=False):
         """Sort a list of PodcastEpisode objects chronologically
 
         Returns a iterable, sorted sequence of the episodes
         """
         return sorted(episodes, key=cls.episode_sort_key, reverse=reverse)
+
+    @classmethod
+    def sort_episodes_by_current_position_updated(cls,
+                                                  episodes,
+                                                  reverse=False):
+        """Sort a list of PodcastEpisode objects by their last played time
+
+        Returns a iterable, sorted sequence of the episodes
+        """
+        return sorted(episodes,
+                      key=cls.episode_recent_sort_key,
+                      reverse=reverse)
