@@ -98,6 +98,7 @@ class EpisodeModelFields(minidb.Model):
     explicit = bool
     number = int
     type = str
+    season = int
 
 
 class PodcastModelFields(minidb.Model):
@@ -133,7 +134,7 @@ class PodcastEpisode(EpisodeModelFields, PodcastModelMixin):
     MAX_FILENAME_LENGTH = 200
 
     UPDATE_KEYS = ('title', 'url', 'description', 'link', 'published', 'guid', 'file_size',
-                   'payment_url', 'subtitle', 'description_html', 'episode_art_url', 
+                   'payment_url', 'subtitle', 'description_html', 'episode_art_url',
                    'itunes_author', 'explicit', 'number', 'type')
 
     class __minidb_defaults__:
