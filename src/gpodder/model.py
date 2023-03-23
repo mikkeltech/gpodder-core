@@ -118,6 +118,7 @@ class PodcastModelFields(minidb.Model):
     payment_url = str
     download_strategy = int
     download_episode_art = bool
+    description = str
 
 
 class PodcastModelMixin(object):
